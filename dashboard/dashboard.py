@@ -14,11 +14,11 @@ with Gathering_Data:
     tab1, tab2 = ss.tabs(["1", "2"])
     with tab1:
         ss.text("dataset hour")
-        df = pd.read_csv("hour.csv", delimiter=",")    
+        df = pd.read_csv("../data/hour.csv", delimiter=",")    
         ss.dataframe(df)
     with tab2:
         ss.text("dataset day")
-        df = pd.read_csv("day.csv", delimiter=",")    
+        df = pd.read_csv("../data/day.csv", delimiter=",")    
         ss.dataframe(df)
     
 
@@ -26,21 +26,21 @@ with Assessing_Data:
     tab1, tab2 ,tab3= ss.tabs(["1", "2","3"])
     with tab1:
         ss.title("Analisis Data Penyewaan Sepeda")
-        hours_df = pd.read_csv("hour.csv")
+        hours_df = pd.read_csv("../data/hour.csv")
         ss.subheader("Jumlah Duplikasi:")
         ss.write(hours_df.isna().sum())
         ss.subheader("Nilai Unik dalam Kolom 'weathersit':")
         ss.write(hours_df['weathersit'].unique())
     with tab2:
         ss.title("Analisis Data Penyewaan Sepeda")
-        day_df = pd.read_csv("day.csv")
+        day_df = pd.read_csv("../data/day.csv")
         jumlah_duplikat = day_df.duplicated().sum()
         ss.subheader("Jumlah Data Duplikat:")
         ss.write(jumlah_duplikat)
         
     with tab3:
         ss.title("Analisis Data Penyewaan Sepeda")
-        day_df = pd.read_csv("day.csv")
+        day_df = pd.read_csv("../data/day.csv")
         jumlah_nilai_hilang = day_df.isnull().sum()
         ss.subheader("Jumlah Nilai yang Hilang di Setiap Kolom:")
         ss.write(jumlah_nilai_hilang)
@@ -49,7 +49,7 @@ with Cleaning_Data:
      tab1, tab2= ss.tabs(["1", "2"])
      with tab1:
          ss.title("Analisis Data Penyewaan Sepeda")
-         hour_df = pd.read_csv("hour.csv")
+         hour_df = pd.read_csv("../data/hour.csv")
          hour_df.drop_duplicates(inplace=True)
          hour_df.drop(columns=['instant'], inplace=True)
          ss.subheader("Data Penyewaan Sepeda per Jam:")
@@ -57,7 +57,7 @@ with Cleaning_Data:
          
      with tab2:
          ss.title("Analisis Data Penyewaan Sepeda")
-         day_df = pd.read_csv("day.csv")
+         day_df = pd.read_csv("../data/day.csv")
          day_df.drop_duplicates(inplace=True)
          day_df['dteday'] = pd.to_datetime(day_df['dteday'], dayfirst=True)
          ss.subheader("Data Penyewaan Sepeda per Hari:")
@@ -68,7 +68,7 @@ ss.title('Exploratory Data Analysis (EDA)')
 Tab1,Tab2,Tab3 = ss.tabs(["1", "2", "3"])
 with Tab1:
     ss.title("Analisis Data Penyewaan Sepeda per Musim")
-    day_df = pd.read_csv("day.csv")
+    day_df = pd.read_csv("../data/day.csv")
     ss.subheader("Tipe Data dari Setiap Kolom:")
     ss.write(day_df.dtypes)
     day_df = day_df.drop(columns=['dteday'])
@@ -78,7 +78,7 @@ with Tab1:
     ss.dataframe(average_by_season)
 with Tab2:
     ss.title("Analisis Data Penyewaan Sepeda per Jam")
-    hour_df = pd.read_csv("hour.csv")
+    hour_df = pd.read_csv("../data/hour.csv")
     ss.subheader("Histogram Data Penyewaan Sepeda per Jam:")
     hour_df.hist(bins=30, figsize=(10, 8), grid=False)
     plt.tight_layout()  # Memastikan layout yang baik
@@ -90,7 +90,7 @@ with Tab2:
     
 
 with Tab3:
-    day_df = pd.read_csv("day.csv")
+    day_df = pd.read_csv("../data/day.csv")
     ss.title("Analisis Data Penyewaan Sepeda per Hari")
     ss.subheader("Ringkasan Statistik Data:")
     stats_summary = day_df.describe(include="all")  # Menampilkan deskripsi statistik untuk semua kolom
@@ -99,7 +99,7 @@ with Tab3:
 ss.title("Visualization & Explanatory Analysis")
 Pertanyaan1 , Pertanyaan2, = ss.tabs(['Pertanyaan1', 'Pertanyaan2'])
 with Pertanyaan1:
-    day_df = pd.read_csv("day.csv")
+    day_df = pd.read_csv("../data/day.csv")
     season_counts = day_df.groupby('season')['cnt'].sum()
 # Membuat plot
     plt.figure(figsize=(10, 6))
@@ -114,7 +114,7 @@ with Pertanyaan1:
     ss.pyplot(plt) 
 
 with Pertanyaan2:
-    hour_df = pd.read_csv("hour.csv")
+    hour_df = pd.read_csv("../data/hour.csv")
     plt.figure(figsize=(12, 6))
     plt.plot(hour_df['hr'], hour_df['cnt'], color='greenyellow', marker='o')
     plt.title('Jumlah Penyewa Sepeda per Jam')
@@ -130,7 +130,7 @@ ss.title("Analisis Lanjutan")
 RFM_Analysis,Geospatial_Analysis,Clustering = ss.tabs(["RFM Analysis", "Geospatial Analysis", "Clustering"])
 with RFM_Analysis:
     ss.title("Analisis RFM Penyewaan Sepeda")
-    day_df = pd.read_csv("day.csv")
+    day_df = pd.read_csv("../data/day.csv")
     day_df['total_rentals'] = day_df['casual'] + day_df['registered']
     rfm_df = day_df.groupby('dteday').agg(
         Recency=('dteday', lambda x: (pd.to_datetime('2012-12-31') - pd.to_datetime(x)).dt.days.min()),
@@ -143,7 +143,7 @@ with RFM_Analysis:
     
 with Geospatial_Analysis:
     ss.title("Distribusi Penyewa Sepeda berdasarkan Lokasi")
-    day_df = pd.read_csv("day.csv")
+    day_df = pd.read_csv("../data/day.csv")
     ss.subheader("Nama Kolom dalam Dataset:")
     ss.write(day_df.columns)
     day_df['longitude'] = -77.0369  # Contoh longitude
@@ -159,7 +159,7 @@ with Geospatial_Analysis:
 
 with Clustering:
     ss.title("Analisis Penyewaan Sepeda - Clustering")
-    day_df = pd.read_csv("day.csv")
+    day_df = pd.read_csv("../data/day.csv")
     day_df['Rental_Category'] = pd.cut(day_df['cnt'], bins=[0, 100, 300, float('inf')], labels=['Rendah', 'Sedang', 'Tinggi'])
 
 # melAkukan binning
