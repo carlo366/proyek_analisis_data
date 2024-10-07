@@ -81,8 +81,8 @@ with Tab2:
     hour_df = pd.read_csv("data/hour.csv")
     ss.subheader("Histogram Data Penyewaan Sepeda per Jam:")
     hour_df.hist(bins=30, figsize=(10, 8), grid=False)
-    plt.tight_layout()  # Memastikan layout yang baik
-    ss.pyplot(plt)  # Menampilkan histogram di Streamlit
+    plt.tight_layout() 
+    ss.pyplot(plt)
     hour_df_numeric = hour_df.select_dtypes(include=['number'])
     ss.subheader("Matriks Korelasi:")
     correlation_matrix = hour_df_numeric.corr()
@@ -93,15 +93,14 @@ with Tab3:
     day_df = pd.read_csv("data/day.csv")
     ss.title("Analisis Data Penyewaan Sepeda per Hari")
     ss.subheader("Ringkasan Statistik Data:")
-    stats_summary = day_df.describe(include="all")  # Menampilkan deskripsi statistik untuk semua kolom
-    ss.dataframe(stats_summary)  # Menampilkan ringkasan di Streamlit
+    stats_summary = day_df.describe(include="all")  
+    ss.dataframe(stats_summary)  
     
 ss.title("Visualization & Explanatory Analysis")
-Pertanyaan1 , Pertanyaan2, = ss.tabs(['Pertanyaan1', 'Pertanyaan2'])
+Pertanyaan1 , Pertanyaan2, = ss.tabs([' Berapa Jumlah penyewaan sepeda yang dihasilkan untuk setiap musim?', 'Berapa Jumlah penyewaan sepeda untuk per jam-nya?'])
 with Pertanyaan1:
     day_df = pd.read_csv("data/day.csv")
     season_counts = day_df.groupby('season')['cnt'].sum()
-# Membuat plot
     plt.figure(figsize=(10, 6))
     season_counts.plot(kind='bar', color='skyblue')
     plt.title('Jumlah Penyewa Sepeda Berdasarkan Musim')
@@ -109,22 +108,27 @@ with Pertanyaan1:
     plt.ylabel('Jumlah Penyewa')
     plt.xticks(ticks=[0, 1, 2, 3], labels=['Musim Dingin', 'Musim Semi', 'Musim Panas', 'Musim Gugur'], rotation=0)
     plt.grid(axis='y')
-# Menampilkan plot di Streamlit
+
     ss.title("Analisis Jumlah Penyewa Sepeda Berdasarkan Musim")
     ss.pyplot(plt) 
 
 with Pertanyaan2:
     hour_df = pd.read_csv("data/hour.csv")
-    plt.figure(figsize=(12, 6))
-    plt.plot(hour_df['hr'], hour_df['cnt'], color='greenyellow', marker='o')
-    plt.title('Jumlah Penyewa Sepeda per Jam')
-    plt.xlabel('Jam')
-    plt.ylabel('Jumlah Penyewa')
-    plt.xticks(range(0, 24))
-    plt.grid()
 
-    ss.title("Analisis Jumlah Penyewa Sepeda per Jam")
-    ss.pyplot(plt)      
+    ss.title('Analisis Penyewaan Sepeda per Jam')
+
+    ss.write("Visualisasi ini menampilkan jumlah penyewa sepeda di setiap jam berdasarkan dataset yang tersedia.")
+
+    def plot_rental_per_hour():
+        plt.figure(figsize=(12, 6))
+        plt.bar(hour_df['hr'], hour_df['cnt'], color='skyblue')
+        plt.title('Jumlah Penyewa Sepeda per Jam', fontsize=16)
+        plt.xlabel('Jam', fontsize=12)
+        plt.ylabel('Jumlah Penyewa', fontsize=12)
+        plt.xticks(range(0, 24)) 
+        plt.grid(axis='y', linestyle='--', alpha=0.7)  
+        ss.pyplot(plt)  
+    plot_rental_per_hour()     
     
 ss.title("Analisis Lanjutan")
 RFM_Analysis,Geospatial_Analysis,Clustering = ss.tabs(["RFM Analysis", "Geospatial Analysis", "Clustering"])
